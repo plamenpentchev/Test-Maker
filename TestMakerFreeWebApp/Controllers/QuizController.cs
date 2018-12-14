@@ -13,6 +13,32 @@ namespace TestMakerFreeWebApp.Controllers
     [Route("api/[controller]")]
     public class QuizController : Controller
     {
+        #region RESTfull convention methods
+        /// <summary>
+        /// GET: api/quiz/{id}
+        /// Retrieves the quiz with the given id.
+        /// </summary>
+        /// <param name="id">The id of an existing quiz</param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var v = new QuizViewModel()
+            {
+                Id = id,
+                Title = String.Format("Sample quiz with id {0}", id),
+                Description = "Not a real quiz: its just a smaple.",
+                CreatedDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now
+            };
+
+            return new JsonResult(v, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            });
+        } 
+        #endregion
+
         //... api/quiz/Latest
         [HttpGet("Latest/{num:int?}")]
         public IActionResult Latest(int num = 10)
