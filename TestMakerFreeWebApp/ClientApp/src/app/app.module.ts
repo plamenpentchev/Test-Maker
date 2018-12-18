@@ -7,19 +7,34 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { QuizListComponent } from './components/quiz-list/quiz-list.component';
+import { QuizComponent } from './components/quiz/quiz.component';
+import { AboutComponent } from './components/about/about.component';
+import { LoginComponent } from './components/login/login.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent
+    HomeComponent,
+    QuizListComponent,
+    QuizComponent,
+    AboutComponent,
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch: 'full' },
+      { path: 'about', component: AboutComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'quiz/:id', component: QuizComponent },
+      { path: '**', component: PageNotFoundComponent }
     ])
   ],
   providers: [],

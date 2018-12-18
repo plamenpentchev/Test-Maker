@@ -1,0 +1,7 @@
+ul.quizzies li {
+  color: #000acb;
+  cursor: pointer;
+}
+ul.quizzies li.selected {
+  background-color: #cccccc;
+}

@@ -36,9 +36,45 @@ namespace TestMakerFreeWebApp.Controllers
             {
                 Formatting = Formatting.Indented
             });
-        } 
+        }
+        
+
+        // POST api/<controller>
+        /// <summary>
+        /// Edit the Quiz with the given id.
+        /// </summary>
+        /// <param name="m">The QuizViewModel containint the data to update.</param>
+        [HttpPost]
+        public void Post(QuizViewModel m)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PUT api/<controller>/5
+        /// <summary>
+        /// Adds a new answer to the data base.
+        /// </summary>
+        /// <param name="m">The QuizViewModel containing the data to insert.</param>
+        [HttpPut("{id}")]
+        public void Put(QuizViewModel m)
+        {
+            throw new NotImplementedException();
+        }
+
+        // DELETE api/<controller>/5
+        /// <summary>
+        /// Deletes the quiz with the given id from the data base.
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
+
+        #region attribute-based routing methds
         //... api/quiz/Latest
         [HttpGet("Latest/{num:int?}")]
         public IActionResult Latest(int num = 10)
@@ -115,5 +151,6 @@ namespace TestMakerFreeWebApp.Controllers
             );
         }
 
+        #endregion
     }
 }

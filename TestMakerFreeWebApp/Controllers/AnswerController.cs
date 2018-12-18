@@ -49,29 +49,51 @@ namespace TestMakerFreeWebApp.Controllers
                 );
         }
 
+        #region RESTful based convention methods
         // GET api/<controller>/5
+        /// <summary>
+        /// Retrieves the answer with given id
+        /// </summary>
+        /// <param name="id">The id of an existsing answer</param>
+        /// <returns>The answer to the gievn id.</returns>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Content("Not implemented yet.");
         }
 
         // POST api/<controller>
+        /// <summary>
+        /// Edit the Answer with the given id.
+        /// </summary>
+        /// <param name="m">The AnswerViewModel containint the data to update.</param>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post(AnswerViewModel m)
         {
+            throw new NotImplementedException();
         }
 
         // PUT api/<controller>/5
+        /// <summary>
+        /// Adds a new answer to the data base.
+        /// </summary>
+        /// <param name="m">The answer view model containing the data to insert.</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(AnswerViewModel m)
         {
+            throw new NotImplementedException();
         }
 
         // DELETE api/<controller>/5
+        /// <summary>
+        /// Deletes the answer with the given id from the data base.
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-        }
+            throw new NotImplementedException();
+        } 
+        #endregion
     }
 }
