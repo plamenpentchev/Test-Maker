@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using TestMakerFreeWebApp.Extensions;
+using TestMakerFreeWebApp.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace TestMakerFreeWebApp
 {
@@ -23,6 +26,15 @@ namespace TestMakerFreeWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //... Add Entity Framework support for SqlServer
+            services.AddEntityFrameworkSqlServer();
+
+            //... Add ApplicationDBContext
+            services.AddDbContext<ApplicationDbContext>(options => 
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -18,7 +18,7 @@ namespace TestMakerFreeWebApp.Data.Models
         #region Properties
         [Key]
         [Required]
-        public int Id { get; set; }
+        public int ResultId { get; set; }
         [Required]
         public int QuizId { get; set; }
         [Required]
