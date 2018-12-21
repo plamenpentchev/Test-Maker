@@ -20,6 +20,7 @@ namespace TestMakerFreeWebApp.Data
 
         } 
         #endregion
+       
         #region Methods
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
