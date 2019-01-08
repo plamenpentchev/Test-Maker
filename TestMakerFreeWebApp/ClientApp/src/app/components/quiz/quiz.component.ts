@@ -40,6 +40,25 @@ export class QuizComponent implements OnInit {
 
   }
 
+  onEdit() {
+    this.router.navigate(['quiz/edit', this.quiz.QuizId]);
+  }
+  onDelete() {
+    if (confirm( `Do you really want to delete this quiz (${this.quiz.QuizId})?`)) {
+      var url = `${this.baseUrl}api/quiz/${this.quiz.QuizId}`;
+      console.log(url);
+      this.http
+        .delete(url)
+        .subscribe(
+              result => {
+                  console.log(`Quiz ID: ${this.quiz.QuizId} successfully deleted.`);
+                  this.router.navigate(['home']);
+                },
+              error => console.error(error)
+        );
+    }
+  }
+
   ngOnInit() {
   }
 

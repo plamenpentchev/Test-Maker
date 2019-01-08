@@ -8,7 +8,9 @@
                 <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' [routerLink]='["/"]'>TestMakerFreeWebApp</a>
+          <!--<quiz-search class="search-navmenu" placeholder="Type here ..."> </quiz-search>-->
         </div>
+
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
             <ul class='nav navbar-nav'>
@@ -18,16 +20,23 @@
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
-                    <a  [routerLink]="['/about']">
-                        <span class='glyphicon glyphicon-info-sign'></span>
-                        About
-                    </a>
+                  <a [routerLink]="['/about']">
+                    <span class='glyphicon glyphicon-info-sign'></span>
+                    About
+
+                  </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/login']">
                           <span class="glyphicon glyphicon-log-in"></span>
                           Login
                     </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                  <a [routerLink]="['/quiz/create']">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    Create a quiz
+                  </a>
                 </li>
             </ul>
         </div>

@@ -18,7 +18,7 @@ namespace TestMakerFreeWebApp.ViewModels
         #endregion
 
         #region properties
-        public int Id { get; set; }
+        public int QuestionId { get; set; }
         public int QuizId { get; set; }
         public string Text { get; set; }
         public string Notes { get; set; }

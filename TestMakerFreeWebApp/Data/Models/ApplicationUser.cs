@@ -19,7 +19,7 @@ namespace TestMakerFreeWebApp.Data.Models
         #region Properties
         [Key]
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [MaxLength(128)]

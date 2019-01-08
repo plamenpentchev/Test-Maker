@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestMakerFreeWebApp.Data.WFSSDTest
 {
     public class Stammdaten
     {
+        [Key]
+        [Required]
         public string PERNR { get; set; }
         public string WERKS { get; set; }
         public string NAME1 { get; set; }

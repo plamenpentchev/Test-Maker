@@ -5,7 +5,7 @@ import { Router, Route } from '@angular/router';
 @Component({
   selector: 'quiz-list',
   templateUrl: './quiz-list.component.html',
-  styleUrls: ['./quiz-list.component.css']
+  styleUrls: ['./quiz-list.component.less'] // loading less styles using less-loader(npm). configured in webpack config
 })
 export class QuizListComponent implements OnInit {
   @Input() class: string;
@@ -23,8 +23,9 @@ export class QuizListComponent implements OnInit {
   }
 
   onSelect(quiz: IQuiz) {
-    this.selectedQuiz = quiz;
-    this.router.navigate(["quiz", this.selectedQuiz.Id]);
+    var v = quiz;
+    this.selectedQuiz = v;
+    this.router.navigate(["quiz/", v.QuizId]);
   }
 
   ngOnInit() {

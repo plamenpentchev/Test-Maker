@@ -4,49 +4,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TestMakerFreeWebApp.ViewModels;
+using TestMakerFreeWebApp.Data;
+using TestMakerFreeWebApp.Data.Models;
 using Newtonsoft.Json;
+using Mapster;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TestMakerFreeWebApp.Controllers
 {
     [Route("api/[controller]")]
-    public class AnswerController : Controller
+    public class AnswerController : Controller, IBaseAPIController
     {
-        // GET: api/<controller>
-        [HttpGet("All/{questionId}")]
-        public IActionResult All(int questionId)
+        private readonly ApplicationDbContext DBContext;
+        private readonly JsonSerializerSettings JsonSettings;
+
+        ApplicationDbContext IBaseAPIController.DBContext => DBContext;
+
+        JsonSerializerSettings IBaseAPIController.JsonSettings => JsonSettings;
+        public AnswerController(ApplicationDbContext ctxt)
         {
-            var sampleAnswers = new List<AnswerViewModel>();
-            sampleAnswers.Add(new AnswerViewModel() {
-                Id = 1,
-                QuestionId = questionId,
-                Text = "Friends and Family",
-                Value = new Random().Next(1, 10),
-                CreatedDate = DateTime.Now,
-                LastModifiedDate = DateTime.Now
-            });
+            this.DBContext = ctxt;
+            this.JsonSettings = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+        }
 
-            for (int i = 2; i < 5; i++)
-            {
-                sampleAnswers.Add(new AnswerViewModel()
-                {
-                    Id = i,
-                    QuestionId = questionId,
-                    Text = string.Format("Sample Answer {0}", i),
-                    Value = new Random().Next(1,10),
-                    CreatedDate = DateTime.Now,
-                    LastModifiedDate = DateTime.Now
-                });
-            }
-
-            return new JsonResult(
-                sampleAnswers,
-                new JsonSerializerSettings()
-                {
-                    Formatting = Formatting.Indented
-                }
-                );
+        // GET: api/<controller>
+        [HttpGet("All/{id}")]
+        public IActionResult All(int id)
+        {
+            var answers = this.DBContext.Answers.Where(a => a.QuestionId == id).ToArray();
+            if (null == answers)
+                return NotFound(new  { Error= $"No answers found to quetsion id [{ id }]"});
+            
+            return new JsonResult(answers.Adapt<AnswerViewModel[]>(), this.JsonSettings);
         }
 
         #region RESTful based convention methods
@@ -59,7 +49,11 @@ namespace TestMakerFreeWebApp.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Content("Not implemented yet.");
+            var answer = this.DBContext.Answers.Where(a => a.AnswerId == id).FirstOrDefault();
+            if (null == answer)
+                return NotFound(new { Error = $"Answer with id [{ id }] not found."});
+
+            return new JsonResult(answer.Adapt<AnswerViewModel>(), this.JsonSettings);
         }
 
         // POST api/<controller>
@@ -68,9 +62,32 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary>
         /// <param name="m">The AnswerViewModel containint the data to update.</param>
         [HttpPost]
-        public void Post(AnswerViewModel m)
+        public IActionResult Post([FromBody]AnswerViewModel m)
         {
-            throw new NotImplementedException();
+            if(null == m)
+                return new StatusCodeResult(500);
+
+            //var answer = m.Adapt<Answer>();
+
+            var answer = this.DBContext.Answers.Where(a => a.AnswerId == m.AnswerId).FirstOrDefault();
+
+            if (null == answer)
+                return NotFound(new
+                {
+                    Error = $"No answer with id [{ m.AnswerId }] was found."
+                });
+            // handle the update (without object-mapping)
+            // by manually assigning the properties
+            // we want to accept from the request
+            answer.QuestionId = m.QuestionId;
+            answer.Text = m.Text;
+            answer.Value = m.Value;
+            answer.Notes = m.Notes;
+            // properties set from server-side
+            answer.LastModifiedDate = answer.CreatedDate;
+
+            this.DBContext.SaveChanges();
+            return new JsonResult( answer.Adapt<AnswerViewModel>(), this.JsonSettings);
         }
 
         // PUT api/<controller>/5
@@ -78,10 +95,26 @@ namespace TestMakerFreeWebApp.Controllers
         /// Adds a new answer to the data base.
         /// </summary>
         /// <param name="m">The answer view model containing the data to insert.</param>
-        [HttpPut("{id}")]
-        public void Put(AnswerViewModel m)
+        [HttpPut]
+        public IActionResult Put([FromBody] AnswerViewModel m)
         {
-            throw new NotImplementedException();
+            if (m == null)
+                return new  StatusCodeResult(500);
+            
+            var answer = m.Adapt<Answer>();
+            // override those properties
+            // that should be set from the server-side only
+            answer.QuestionId = m.QuestionId;
+            answer.Text = m.Text;
+            answer.Notes = m.Notes;
+            // properties set from server-side
+            answer.CreatedDate = DateTime.Now;
+            answer.LastModifiedDate = answer.CreatedDate;
+
+            this.DBContext.Answers.Add(answer);
+            this.DBContext.SaveChanges();
+            return new JsonResult(answer.Adapt<AnswerViewModel>(), this.JsonSettings);
+
         }
 
         // DELETE api/<controller>/5
@@ -90,9 +123,16 @@ namespace TestMakerFreeWebApp.Controllers
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            var answer = this.DBContext.Answers.Where(a => a.AnswerId == id).FirstOrDefault();
+            if (null == answer)
+                return NotFound(new { Error = $"Answer with id [{ id }]" });
+            
+            this.DBContext.Answers.Remove(answer);
+            this.DBContext.SaveChanges();
+            
+            return new OkResult();
         } 
         #endregion
     }

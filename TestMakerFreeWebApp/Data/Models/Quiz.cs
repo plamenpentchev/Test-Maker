@@ -39,7 +39,7 @@ namespace TestMakerFreeWebApp.Data.Models
         /// foreign key, points to the user who created the quiz
         /// </summary>
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public int ViewCount { get; set;
  }

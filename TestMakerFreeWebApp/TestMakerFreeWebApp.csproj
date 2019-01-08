@@ -12,7 +12,12 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Antiforgery" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
@@ -65,11 +70,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\interfaces\IAnswer.ts" />
+    <None Remove="ClientApp\src\app\interfaces\IQuestion.ts" />
     <None Remove="ClientApp\src\app\interfaces\IQuiz.ts" />
+    <None Remove="ClientApp\src\app\interfaces\IResult.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\IAnswer.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\IQuestion.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\IQuiz.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\IResult.ts" />
   </ItemGroup>
 
   <ItemGroup>

@@ -108,7 +108,7 @@ const postcssPlugins = function (loader) {
                 { url: 'rebase' },
             ]),
             PostcssCliResources({
-                deployUrl: loader.loaders[loader.loaderIndex].options.ident == 'extracted' ? '' : deployUrl,
+                deployUrl: loader.loaders[loader.loaderIndex].options.ident === 'extracted' ? '' : deployUrl,
                 loader,
                 filename: `[name]${hashFormat.file}.[ext]`,
             }),
@@ -354,7 +354,13 @@ module.exports = {
             }
           },
           {
-            "loader": "less-loader",
+              "loader" : "style-loader" // creates style nodes from JS settings
+          },
+          {
+              "loader": "css-loader" // translates css into commonJS
+          },
+          {
+            "loader": "less-loader", // compiles less to css
             "options": {
               "sourceMap": true
             }

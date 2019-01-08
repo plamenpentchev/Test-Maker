@@ -10,4 +10,6 @@
       <textarea [(ngModel)]="quiz.Description" placeholder="Insert a suitable description ..."></textarea>
     </li>
   </ul>
+  <input type="button"  value="Edit quiz" (click)="onEdit()"/>
+  <input type="button" value="Delete quiz" (click)="onDelete()" />
 </div>

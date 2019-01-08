@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using TestMakerFreeWebApp.Extensions;
 using TestMakerFreeWebApp.Data;
+using TestMakerFreeWebApp.Data.WFSSDTest;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -30,11 +31,19 @@ namespace TestMakerFreeWebApp
             //... Add Entity Framework support for SqlServer
             services.AddEntityFrameworkSqlServer();
 
+            //... Add Stammdata db context
+            services.AddDbContext<WFSSDTestContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Stammdaten"));
+            });
+
             //... Add ApplicationDBContext
             services.AddDbContext<ApplicationDbContext>(options => 
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+           
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -61,7 +70,7 @@ namespace TestMakerFreeWebApp
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles(new StaticFileOptions() {
                 OnPrepareResponse=(context) =>
@@ -102,6 +111,12 @@ namespace TestMakerFreeWebApp
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                dbContext.Database.Migrate();
+                DBSeeder.Seed(dbContext);
+            }
         }
     }
 }

@@ -34,6 +34,12 @@ namespace TestMakerFreeWebApp.Data.WFSSDTest
             {
                 entity.ToTable("stammdaten");
             });
+            modelBuilder.Entity<StammdatenAbwesenheiten>(entity =>
+            {
+                entity.ToTable("stammdaten_abwesenheiten");
+            });
         }
+        public DbSet<Stammdaten> Stammdaten { get; set; }
+        public DbSet<StammdatenAbwesenheiten> StammdatenAbwesenheiten { get; set; }
     }
 }

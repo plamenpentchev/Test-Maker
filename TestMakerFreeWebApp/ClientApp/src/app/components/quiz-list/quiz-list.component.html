@@ -1,7 +1,8 @@
 <h2> {{ title }}</h2>
 <ul class="quizzies">
-  <li *ngFor="let quiz of quizzies"
-      [class.selected]="quiz === selectedQuiz"
-      (click)="onSelect(quiz)"><span>{{ quiz.Title }}</span></li>
+  <li *ngFor="let q of quizzies"
+      [class.selected]="q === selectedQuiz"
+      (click)="onSelect(q)"><span>{{ q.Title }}</span>
+  </li>
 </ul>
 <!--<quiz *ngIf="selectedQuiz"></quiz>-->
